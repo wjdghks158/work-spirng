@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
+  <display-name>work-spring</display-name>
+  <listener>
+  	<listener-class>com.bit.listener.ContextListener</listener-class>
+  </listener>
+  
+  <filter>
+  	<filter-name>encodingFilter</filter-name>
+  	<filter-class>com.bit.filter.EncodingFilter</filter-class>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  </filter>
+  
+  <filter-mapping>
+  	<filter-name>encodingFilter</filter-name>
+  	<url-pattern>*</url-pattern>
+  </filter-mapping>
+  <servlet>
+  	<servlet-name>dispatcher</servlet-name>
+  	<servlet-class>com.bit.framework.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>controllers</param-name>
+  		<param-value>
+  			com.bit.controller.BoardController |
+  			com.bit.controller.LoginController |
+  			com.bit.controller.MemberController
+  		</param-value>
+  	</init-param>
+  </servlet>
+    
+  <!-- .do로 끝나는 패턴(URL)의 요청을 모두 받겠다. -->
+   <servlet-mapping>
+  	<servlet-name>dispatcher</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+	<welcome-file>/WEB-INF/views/main/index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
+
