@@ -4,7 +4,7 @@
 	<tr align="center">
 		<td>
 			<a href="http://www.inzent.com/">
-				<img src="/jblog-spring/assets/images/main_img_01.png" style="border:1px; width:400px; height:300px"/>
+				<img src="/work-spring/assets/images/main_img_01.png" style="border:1px; width:400px; height:300px"/>
 			</a>
 		</td>
 		<td>

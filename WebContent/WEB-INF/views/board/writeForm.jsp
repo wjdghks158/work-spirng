@@ -9,7 +9,8 @@
 	// 게시판 목록으로 돌아가는 함수
 	//	-> 목록 버튼 클릭 시, 호추!
 	function moveToList(){
-		location.href="/jblog/list.do";
+		location.href="/work-spring/list.do";
+		
 	}
 </script>
 </head>
@@ -21,7 +22,7 @@
 		<hr width="80%"/>
 		<h2>글 등록</h2>
 		<hr width="80%"/>
-		<form action="/jblog/write.do" method="post" enctype="multipart/form-data">
+		<form action="/work-spring/write.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="writer" value="${user.id}"/>
 			<table width="80%" border="1">
 				<tr>
