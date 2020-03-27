@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	/*
+		자바의 Scope
+			- 자바는 변수를 사용할 수 있는 영역이 { } 형태의 코드 블로으로 나뉜다.
+			- 변수의 가시성으로 안에서 밖은 접근 가능하지만, 밖에서 안은 불가능!
+		
+		JSP Scope
+		 - 웹 서버 서블릿 동작 시 데이터를 공유할 것인가? 공유 못하게 할 것인가?
+			의 범위(영역) 나눈다.
+		 - 내장 객체 pagecontext, request, session, application를 기준으로 데이터의 유지 범위를 지정!
+		 
+		 JavaScript Scope
+		  - { } 를 이용한 코드 블록 방식으로 나누지 않는다.
+		  - 특정 구분에 따라서만 Scope 를 생성하고 유지!
+		  	function : 함수
+		  	with	: 객체의 영역 생성 (지양함)
+		  	catch	: 예외처리 구문
+	*/
+	
+	// 1. function을 활용한 스코프 생성
+	function foo() {
+		  		var val = 'Hello Scope';
+	}
+	console.log(typeof val === 'undefined');
+	// val 변수는 foo 함수 영역에 존재!
+	// -> 보이지 않기에 결과는 True
+	
+	function goo(a,b) { //function scope
+		var result = a + b;
+		return result;
+	}
+	
+	console.log(typeof result); // undefined 나옴
+	
+	// with(object) { ... } -> 전달된 객체의 영역을 생성
+	document.write('Hello<br>');
+	with(document) {
+		write('JavaScript<br>');
+	}
+	var Person = {};
+	Person.name = '카페';
+	Person.age = 7;
+	Person.addr = '서울시 서초구';
+	Person.info = function() {
+		var str = '';
+	// with ; 특정 객체를 생략하고 속성이 메소드를 사용할 수 있도록 스코프 생성!
+		whith(this) { // Person 객체
+			str += 'name';
+		}
+	}
+	Person.info();
+	
+</script>
+<style>
+	
+</style>
+</head>
+<body>
+
+</body>
+</html>

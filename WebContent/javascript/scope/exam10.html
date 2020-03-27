@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<button id="btn-toggle">Toggle Button</button>
+	<div id="div-pending">Pending</div>
+	<script>
+		(function() {
+			var pendingInterval = false;
+			// 가져오지 않아도 된다.이거 실화냐 ㅋㅋ
+			btn = document.getElementById('btn-toggle');
+			div = document.getElementById('div-pending');
+			// HTML 로딩 후 IIFE로 초기화
+			// -> getElementById() 한번 수행!
+			
+			var startPending = function() {
+				if(div.innerHTML.length > 11 ) { // div 요소 내용 길이가 11보다 크다면 
+					div.innerHTML = 'Pending';
+				}
+				div.innerHTML += '.'; // 기존 요소 내용에 "." 울 추가하여 바꿔라.
+			}
+			
+			btn.addEventListener('click', function() {
+				if(!pendingInterval) {
+					pendingInterval = setInterval(startPending, 500);
+					// setInterval(..) : 특정 시간마다 익명 함수 호출!
+					// setTimeout(...) : 특정 시간이 지나면 익명 함수 호출!
+					
+				}else {
+					clearInterval(pendingInterval);
+					pendingInterval = false;
+				}
+			});
+		}());
+	</script>
+</body>
+</html>

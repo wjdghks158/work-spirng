@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	// 함수 객체 생성1
+	var foo = new Function("a","b","var result=a+b; return result");
+	console.log(foo(10,20));
+	
+	//함수 객체 생성2 (완전 비추천)
+	function goo(a,b) {
+		var result = a + b;
+		return result;
+	}
+	console.log(goo(10,20));
+	
+	// 함수 객체 생성 3 (추천)
+	var hoo = function(a,b) {
+		var result = a+b;
+		return result
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>

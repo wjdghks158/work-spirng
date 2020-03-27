@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- 
+		DOM (Document Object Model)
+		- 문서를 구성하는 객체 모델
+		- HTML 문서에서의 <html>. <head>, <body>, ... 태그 형식들
+		
+		<head></head>에 삽입되는 경우
+			- 문서 객체를 구성하기 전 상태, 렌더링 전 (Rendering)
+			- 초기화 목적, 설정 목적의 스크립트 작성
+			
+		<body></body>에 삽입되는 경우
+			- 문서 객체를 구성한 후 상태, 랜더링 후
+			- 요소들을 변경하기 위한 스크립트 작성
+	 -->
+	 <div id="div1">Clieck div1</div>
+	 <div id="div2">Clieck div2</div>
+	 <div id="div3">Clieck div3</div>
+	<script>
+		var length = 4;
+		/*
+			addEventListener()
+				- 특정 이벤트에 대한 익명 함수를 전달하여,
+					해당 이벤트 발생 시 익명 함수를 호출!
+				- Javascript event binding
+		*/
+		// i = glodersoe가 
+		for(var i=1; i< length; i++) {
+			document.getElementById('div' + i)
+					.addEbentListener('click', function() {
+						console.log('clicked div' + i);
+					},false);
+		}
+		
+		// 스코프의 지속성 setDivClickEvent 함수는 호출되면 해당 함수의 스코프가 생성됨
+		function setDivClickEvent(index) { // index : function scope
+			document.getElementById('div' + index)
+				.addEventListener('click', function() {
+					console.log("asd");
+				},false);
+		}
+	</script>
+</body>
+</html>

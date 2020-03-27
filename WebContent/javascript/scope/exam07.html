@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+   /*
+      exam06.html 에서는 새로 생성할 때마다 새로운 스코프가 생성된다.
+         -> counter, counter2가 서로 다른 스코프를 가진다.
+      자바의 static(전역 변수의 성격)처럼 값을 공유(유지)하고 싶다.
+         -> counter, counter2가 하나의 변수를 공유하도록!
+   */
+   var counterFactory = (function(){ // IIFE를 활용하여 선언과 동시에 호출, 최상위 스코프 (가장 바깥에 있는 놈)
+      var staticCnt = 0; // 최상위 스코프의 내부 변수
+      return function(){
+         var localCnt = 0; // 익명 함수의 내부 변수
+         return { // increase와 decrease 프로퍼티를 가진 객체 반환
+            increase : function(){
+                        // 두 개 이상의 값을 반환시켜주기 위해, 객체로 묶어 반환!
+                        // static과 local 속성에 증가된 cnt 값을 가진 객체 반환
+               return{
+                  staticValue : ++staticCnt, // 최상위 스코프 접근
+                  localValue : ++localCnt      // 한 단계 상위 스코프 접근
+               };
+            },
+            
+            decrease : function(){
+               return{
+                  staticValue : --staticCnt,
+                  localValue : --localCnt
+               };
+            }
+         };
+      };
+   }());
+   /*
+      staticValue
+       - 각각의 객체가 반환되지만, 이를 function으로 한번 더 감싸 새로운 최상위 스코프 생성!
+       - 두 객체가 동일하게 사용하는 변수
+       
+      localValue
+       - 각각의 객체가 반환될 때 생성되는 스코프
+       - 두 객체가 각자 사용하는 변수
+   */
+         
+   // counterFactory 호출을 통해 두 객체를 반환받아 각각 증가 수행
+   var counter1 = counterFactory(), counter2 = counterFactory();
+   console.log(counter1.increase()); // {static: 1, local : 1}
+   console.log(counter2.increase()) // {static: 1, local : 1}
+   console.log(counter1.increase()); // {static: 1, local : 1}
+</script>
+</head>
+<body>
+
+</body>
+</html>

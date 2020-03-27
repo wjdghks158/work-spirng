@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+function outer() { // 외부 함수
+	var cnt = 0; // outer 함수의 local 변수, outer 내부에서만 접근 가능!
+
+	return  {
+		increase : function() {
+			return ++cnt;
+		},
+		decrease : function() {
+			return --cnt;
+		}
+	}
+	
+}
+// outer()는 한 번만 호출, var cnt = 0; 한번 수행!
+var counter = outer(); // outer 함수는 inner 함수를 리턴 함으로써,
+						// outer 함수를 호출 했을 때,
+						// inner 변수에 할당된 function을 리턴 받는다.
+						// increase 변수에는 outer 함수의 리턴인 inner
+						// 익명 함수가 할당!
+// increate()를 호출함으로 상위 스코프 outer의 local 변수 cnt에 접근 가능
+
+// counter의 별도의 스코프 생성 (counter와 counter2는 서로 다른 객체)
+// 새롭게 outer() 함수를 호출함에 따라 새로운 스코프 생성
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

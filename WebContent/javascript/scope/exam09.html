@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	// 함수 내부에서 새로운 함수를 호출, 외부에서 내부 함수를 반환하는 클로저
+	function sum(baseNumber) {
+		var insideNumber = baseNumber;
+		return function(data) {
+			return insideNumber + data;
+		}
+	}
+	
+	var fiveData = sum(5);
+	console.log(fiveData(4));
+	
+	var threeData = sum(3);
+	console.log(threeData(4));
+	// 함수를 호출하면 리턴된 함수의 스코프를 사용! (하위 스코프 체인에 등록된 값)
+	/*
+		반환 형식이 함수이니, 하위 스코프 체인에 등록!
+		익명 함수 : fucntion() {...} -> 함수 리터럴
+		내부적으로 자바스크립트의 기본 객체 중 하나인 function 객체를 만드는 과정을 수행한다.
+		sum 함수가 실행 될 때 마다 반환되는 익명 함수는 매번 새로운 function 객체가 된다.
+		
+		fiveData와 threeData가 가지는 함수의 기본 형태는 같지만,
+		두 함수가 할당 받은 스코프 체인, 클로저가 다르기 때문에 다른 함수다.
+	*/
+</script>
+</head>
+<body>
+
+</body>
+</html>

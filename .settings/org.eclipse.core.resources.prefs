@@ -1,0 +1,4 @@
+eclipse.preferences.version=1
+encoding//src/com/bit/dao/MemberDAO.java=UTF-8
+encoding//src/com/bit/util/ConnectionFactory.java=UTF-8
+encoding//src/com/bit/util/ConnectionPool.java=UTF-8
