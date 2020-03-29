@@ -10,12 +10,13 @@ import java.util.List;
 import com.bit.util.ConnectionPool;
 
 import com.bit.vo.BoardVO;
+import com.bit.vo.BoardViewVO;
 import com.bit.vo.FileVO;
 
 /*
 jblog Database DDL Script
 
-[Table] - °Ô½Ã±Û, ÆÄÀÏ
+[Table] - ï¿½Ô½Ã±ï¿½, ï¿½ï¿½ï¿½ï¿½
 CREATE TABLE board (
 no          INT          AUTO_INCREMENT,
 title       VARCHAR(200)    NOT NULL,
@@ -39,319 +40,458 @@ PRIMARY KEY (no)
 */
 
 public class BoardDAO {
-private BoardVO board = new BoardVO();
+	private BoardVO board = new BoardVO();
 
-/*
- *  ¸ðµç °Ô½Ã±Û Á¶È¸
- */
-public List<BoardVO> selectAllBoard() throws Exception {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   List<BoardVO> list = new ArrayList<>();
-   
-   try {
-   
-      con = ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
-      sql.append(" from board ");
-      sql.append(" ORDER BY no DESC ");
-      
-      pstmt = con.prepareStatement(sql.toString());
-      
-      ResultSet rs = pstmt.executeQuery();
-      
-      while(rs.next()) {
-         BoardVO board = new BoardVO();
-         
-         // µ¥ÀÌÅÍº£ÀÌ½º Á¶È¸ °á°ú °¡Á®¿À±â
-         int no = rs.getInt("no");
-         String title = rs.getString("title");
-         String writer = rs.getString("writer");
-         String reg_date = rs.getString("reg_date");
-         int view_cnt = rs.getInt("view_cnt");
-         
-         // ¸®½ºÆ®¿¡ ´ã¾Æ Àü´ÞÇÏ±â À§ÇØ BoardVO
-         board.setNo(no);
-         board.setTitle(title);
-         board.setWriter(writer);
-         board.setReg_date(reg_date);
-         board.setView_cnt(view_cnt);
-         
-         // ¸®½ºÆ®¿¡ ÀúÀå
-         list.add(board);
-      }//end while
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      
-      if(pstmt != null)
-         pstmt.close();
-      
-      ConnectionPool.close(con);
-   }//end finally
-   return list;
-}//selectAllBoard
+	/*
+	 * ï¿½ï¿½ï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½È¸
+	 */
+	public List<BoardVO> selectAllBoard() throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		List<BoardVO> list = new ArrayList<>();
 
-/*
- *    °Ô½Ã±Û µî·Ï ½Ã, »ç¿ëÇÒ ¹øÈ£ °¡Á®¿À±â (Sequence)
- */
-public int selectNo() {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   int no = 0;
-   
-   try {
-      con = ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" SELECT max(no) + 1 ");
-      sql.append(" from board ");
-      
-      pstmt = con.prepareStatement(sql.toString());
-      
-      ResultSet rs = pstmt.executeQuery();
-      
-      rs.next();
-      no = rs.getInt(1);
-      
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {
-         if(pstmt != null) pstmt.close();
-      }catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   return no;
-}//selectNo
+		try {
 
-/*
- *  °Ô½Ã±Û ÀúÀå
- */
-public void insert(BoardVO board) {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   
-   try {
-      con = ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" INSERT INTO board(no, title, writer, content) ");
-      sql.append(" VALUES (?, ?, ?, ?) ");
-      System.out.println("¹ÚÁ¤È¯");
-      System.out.println(board);
-      pstmt = con.prepareStatement(sql.toString());
-      int index = 1;
-      pstmt.setInt(index++, board.getNo());
-      pstmt.setString(index++, board.getTitle());
-      pstmt.setString(index++, board.getWriter());
-      pstmt.setString(index, board.getContent());
-      
-      pstmt.executeUpdate();
-      
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {
-         if(pstmt != null) pstmt.close();
-      }catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   
-}//insert
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
+			sql.append(" from board ");
+			sql.append(" ORDER BY no DESC ");
 
-/*
- *    Ã·ºÎÆÄÀÏ ÀúÀå
- */
-public void insertFile(FileVO file) {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   
-   try {
-      con = ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" INSERT INTO board_file(no, board_no, ");
-      sql.append("          file_ori_name, file_save_name, file_size) ");
-      sql.append(" VALUES(?, ?, ?, ?, ?) ");
-      
-      pstmt = con.prepareStatement(sql.toString());
-      pstmt.setInt(1, file.getNo());
-      pstmt.setInt(2, file.getBoardNo());
-      pstmt.setString(3, file.getFileOriName());
-      pstmt.setString(4, file.getFileSaveName());
-      pstmt.setInt(5, file.getFileSize());
-      
-      pstmt.executeUpdate();
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {if(pstmt != null) pstmt.close();}
-      catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   
-}//insertFile
+			pstmt = con.prepareStatement(sql.toString());
 
-/*
- *    Á¶È¸¼ö Áõ°¡
- */
-public void updateViewCnt(int no) {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   
-   try {
-      con = ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" UPDATE board ");
-      sql.append(" SET view_cnt = view_cnt + 1 ");
-      sql.append(" WHERE no = ? ");
-      
-      pstmt = con.prepareStatement(sql.toString());
-      pstmt.setInt(1, no);
-      pstmt.executeUpdate();
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {if(pstmt != null) pstmt.close();}
-      catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   
-}//updateViewCnt
+			ResultSet rs = pstmt.executeQuery();
 
-/*
- *    Æ¯Á¤ °Ô½Ã±Û Á¤º¸ Á¶È¸ (°Ô½Ã±Û ¹øÈ£·Î ÇÏ³ªÀÇ °Ô½Ã±Û Á¶È¸)
- */
-public BoardVO selectByNo(int no) {
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   
-   try {
-      con=ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" SELECT no, title, writer, content, ");
-      sql.append("        view_cnt, reg_date   ");
-      sql.append(" from board ");
-      sql.append(" WHERE no = ? ");
-      
-      pstmt = con.prepareStatement(sql.toString());
-      pstmt.setInt(1, no);
-      
-      ResultSet rs = pstmt.executeQuery();
-      rs.next(); //rs¾È¿¡ ÀÖ´Â°É ²¨³½´Ù.
-      
-      board.setNo(no);
-      board.setTitle(rs.getString("title"));
-      board.setWriter(rs.getString("writer"));
-      board.setContent(rs.getString("content"));
-      board.setView_cnt(rs.getInt("view_cnt"));
-      board.setReg_date(rs.getString("reg_date"));
-      
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {if(pstmt != null) pstmt.close();}
-      catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   return board;
-   
-}//selectByNo
+			while (rs.next()) {
+				BoardVO board = new BoardVO();
 
-/*
- *  Ã·ºÎÆÄÀÏ Á¤º¸ Á¶È¸
- *     -> µÎ Å×ÀÌºí °£ ¿¬°áÀÇ ¿ªÇ×À» ÇÏ´Â boardNo Á¸Àç!
- *        board -> no
- *        board_file -> boardNo
- */
-public List<FileVO> selectFileByNo(int boardNo){
-   Connection con = null;
-   PreparedStatement pstmt = null;
-   List<FileVO> fileList = new ArrayList<>();
-   
-   try {
-      con=ConnectionPool.getConnection();
-      StringBuilder sql = new StringBuilder();
-      sql.append(" SELECT no, file_ori_name, file_save_name, file_size ");
-      sql.append(" FROM board_file ");
-      sql.append(" WHERE board_no = ? ");
-      
-      pstmt=con.prepareStatement(sql.toString());
-      pstmt.setInt(1, boardNo);
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				String writer = rs.getString("writer");
+				String reg_date = rs.getString("reg_date");
+				int view_cnt = rs.getInt("view_cnt");
 
-      ResultSet rs = pstmt.executeQuery();
-      
-      while(rs.next()) {
-         FileVO file = new FileVO();
-         file.setNo(rs.getInt("no"));
-         file.setFileOriName(rs.getString("file_ori_name"));
-         file.setFileSaveName(rs.getString("file_save_name"));
-         file.setFileSize(rs.getInt("file_size"));
-         fileList.add(file);
-      }
-      
-   }catch(Exception e) {
-      e.printStackTrace();
-   }finally {
-      try {if(pstmt != null) pstmt.close();}
-      catch(Exception e) {e.printStackTrace();}
-      ConnectionPool.close(con);
-   }//end finally
-   return fileList;
-}//selectFileByNo
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ BoardVO
+				board.setNo(no);
+				board.setTitle(title);
+				board.setWriter(writer);
+				board.setReg_date(reg_date);
+				board.setView_cnt(view_cnt);
 
-public List<BoardVO> selectList(String field, String query, int pageNum) throws SQLException {
-	   Connection con = null;
-	   PreparedStatement pstmt = null;
-	   List<BoardVO> list = new ArrayList<>();
-	   
-	   try {
-	   
-	      con = ConnectionPool.getConnection();
-	      StringBuilder sql = new StringBuilder();
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+				list.add(board);
+			} // end while
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			if (pstmt != null)
+				pstmt.close();
+
+			ConnectionPool.close(con);
+		} // end finally
+		return list;
+	}// selectAllBoard
+
+	/*
+	 * ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Sequence)
+	 */
+	public int selectNo() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int no = 0;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT max(no) + 1 ");
+			sql.append(" from board ");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			ResultSet rs = pstmt.executeQuery();
+
+			rs.next();
+			no = rs.getInt(1);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return no;
+	}// selectNo
+
+	/*
+	 * ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 */
+	public void insert(BoardVO board) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" INSERT INTO board(no, title, writer, content) ");
+			sql.append(" VALUES (?, ?, ?, ?) ");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½È¯");
+			System.out.println(board);
+			pstmt = con.prepareStatement(sql.toString());
+			int index = 1;
+			pstmt.setInt(index++, board.getNo());
+			pstmt.setString(index++, board.getTitle());
+			pstmt.setString(index++, board.getWriter());
+			pstmt.setString(index, board.getContent());
+
+			pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+
+	}// insert
+
+	/*
+	 * Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 */
+	public void insertFile(FileVO file) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" INSERT INTO board_file(no, board_no, ");
+			sql.append("          file_ori_name, file_save_name, file_size) ");
+			sql.append(" VALUES(?, ?, ?, ?, ?) ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, file.getNo());
+			pstmt.setInt(2, file.getBoardNo());
+			pstmt.setString(3, file.getFileOriName());
+			pstmt.setString(4, file.getFileSaveName());
+			pstmt.setInt(5, file.getFileSize());
+
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+
+	}// insertFile
+
+	/*
+	 * ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	 */
+	public void updateViewCnt(int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" UPDATE board ");
+			sql.append(" SET view_cnt = view_cnt + 1 ");
+			sql.append(" WHERE no = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+
+	}// updateViewCnt
+
+	/*
+	 * Æ¯ï¿½ï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ (ï¿½Ô½Ã±ï¿½ ï¿½ï¿½È£ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½È¸)
+	 */
+	public BoardVO selectByNo(int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT no, title, writer, content, ");
+			sql.append("        view_cnt, reg_date   ");
+			sql.append(" from board ");
+			sql.append(" WHERE no = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, no);
+
+			ResultSet rs = pstmt.executeQuery();
+			rs.next(); // rsï¿½È¿ï¿½ ï¿½Ö´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+
+			board.setNo(no);
+			board.setTitle(rs.getString("title"));
+			board.setWriter(rs.getString("writer"));
+			board.setContent(rs.getString("content"));
+			board.setView_cnt(rs.getInt("view_cnt"));
+			board.setReg_date(rs.getString("reg_date"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return board;
+
+	}// selectByNo
+
+	/*
+	 * Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ -> ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ boardNo ï¿½ï¿½ï¿½ï¿½! board -> no
+	 * board_file -> boardNo
+	 */
+	public List<FileVO> selectFileByNo(int boardNo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		List<FileVO> fileList = new ArrayList<>();
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT no, file_ori_name, file_save_name, file_size ");
+			sql.append(" FROM board_file ");
+			sql.append(" WHERE board_no = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, boardNo);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				FileVO file = new FileVO();
+				file.setNo(rs.getInt("no"));
+				file.setFileOriName(rs.getString("file_ori_name"));
+				file.setFileSaveName(rs.getString("file_save_name"));
+				file.setFileSize(rs.getInt("file_size"));
+				fileList.add(file);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return fileList;
+	}// selectFileByNo
+
+	public List<BoardVO> selectList(String field, String query, int pageNum) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		List<BoardVO> list = new ArrayList<>();
+
+		try {
+			
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
 //	      sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
 //	      sql.append(" from board ");
 //	      sql.append(" ORDER BY no DESC ");
 //	      
-	      
-	      sql.append("SELECT * FROM BOARD WHERE "+ field  + " LIKE ? ORDER BY REG_DATE DESC  limit ?,10");
-	    		  
-	      pstmt = con.prepareStatement(sql.toString());
-	      
-	      pstmt.setString(1, "%"+query+"%");
-	      pstmt.setInt(2, pageNum-1);
-	      ResultSet rs = pstmt.executeQuery();
-	      
-	      while(rs.next()) {
-	         BoardVO board = new BoardVO();
-	         
-	         // µ¥ÀÌÅÍº£ÀÌ½º Á¶È¸ °á°ú °¡Á®¿À±â
-	         int no = rs.getInt("no");
-	         String title = rs.getString("title");
-	         String writer = rs.getString("writer");
-	         String reg_date = rs.getString("reg_date");
-	         int view_cnt = rs.getInt("view_cnt");
-	         
-	         // ¸®½ºÆ®¿¡ ´ã¾Æ Àü´ÞÇÏ±â À§ÇØ BoardVO
-	         board.setNo(no);
-	         board.setTitle(title);
-	         board.setWriter(writer);
-	         board.setReg_date(reg_date);
-	         board.setView_cnt(view_cnt);
-	         
-	         // ¸®½ºÆ®¿¡ ÀúÀå
-	         list.add(board);
-	      }//end while
-	   }catch(Exception e) {
-	      e.printStackTrace();
-	   }finally {
-	      
-	      if(pstmt != null)
-	         pstmt.close();
-	      
-	      ConnectionPool.close(con);
-	   }//end finally
-	   return list;
-}
 
-}//class
+			sql.append("SELECT * FROM BOARD WHERE " + field + " LIKE ? ORDER BY REG_DATE DESC  limit ?,10");
 
+			pstmt = con.prepareStatement(sql.toString());
+
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setInt(2, pageNum - 1);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BoardVO board = new BoardVO();
+
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				String writer = rs.getString("writer");
+				String reg_date = rs.getString("reg_date");
+				int view_cnt = rs.getInt("view_cnt");
+
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ BoardVO
+				board.setNo(no);
+				board.setTitle(title);
+				board.setWriter(writer);
+				board.setReg_date(reg_date);
+				board.setView_cnt(view_cnt);
+
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+				list.add(board);
+			} // end while
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			if (pstmt != null)
+				pstmt.close();
+
+			ConnectionPool.close(con);
+		} // end finally
+		return list;
+	}
+
+	public int deleteBoard(String id, int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" delete from board ");
+			sql.append(" WHERE no = ? and writer = ? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, no);
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
+	}
+
+	public BoardVO selectOne(String id, int no) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" SELECT no, title, writer, content, ");
+			sql.append("        view_cnt, reg_date   ");
+			sql.append(" from board ");
+			sql.append(" WHERE no = ? and writer = ?");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, no);
+			pstmt.setString(2, id);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next(); // rsï¿½È¿ï¿½ ï¿½Ö´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+
+			board.setNo(no);
+			board.setTitle(rs.getString("title"));
+			board.setWriter(rs.getString("writer"));
+			board.setContent(rs.getString("content"));
+			board.setView_cnt(rs.getInt("view_cnt"));
+			board.setReg_date(rs.getString("reg_date"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return board;
+	}
+
+	public List<BoardViewVO> selectListView(String field, String query, int pageNum) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		List<BoardViewVO> list = new ArrayList<>();
+
+		try {
+
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+//	      sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
+//	      sql.append(" from board ");
+//	      sql.append(" ORDER BY no DESC ");
+//	      
+
+			sql.append("SELECT * FROM BOARD_VIEW WHERE " + field + " LIKE ? ORDER BY REG_DATE DESC  limit ?,10");
+
+			pstmt = con.prepareStatement(sql.toString());
+
+			pstmt.setString(1, "%" + query + "%");
+			pstmt.setInt(2, pageNum - 1);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BoardViewVO board = new BoardViewVO();
+
+				// ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½È¸ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+				int no = rs.getInt("no");
+				String title = rs.getString("title");
+				String writer = rs.getString("writer");
+				String reg_date = rs.getString("reg_date");
+				int view_cnt = rs.getInt("view_cnt");
+				int cmt_cnt = rs.getInt("cmt_cnt");
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ BoardVO
+				board.setNo(no);
+				board.setTitle(title);
+				board.setWriter(writer);
+				board.setReg_date(reg_date);
+				board.setView_cnt(view_cnt);
+				board.setCmtCnt(cmt_cnt);
+				// ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+				list.add(board);
+			} // end while
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			if (pstmt != null)
+				pstmt.close();
+
+			ConnectionPool.close(con);
+		} // end finally
+		return list;
+	}
+
+}// class

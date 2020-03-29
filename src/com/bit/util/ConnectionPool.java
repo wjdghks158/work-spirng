@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class ConnectionPool {
 	// �뿰寃고븷 �닔 �엳�뒗 理쒕� �옄�썝�쓣 5媛쒕줈 �븳�젙
 	private static final int INIT_COUNT=5;
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/hellodb?serverTimezone=UTC";
+	private static final String URL = "jdbc:mysql://127.0.0.1:3306/insight?serverTimezone=UTC";
 	// �궗�슜 媛��뒫�븳 Connection 媛앹껜 �젙蹂대�� �떞�뒗 由ъ뒪�듃
 	private static ArrayList<Connection> freeList = new ArrayList<>();
 	// �궗�슜 以묒씤 Connection 媛앹껜 �젙蹂대�� �떞�뒗 由ъ뒪�듃

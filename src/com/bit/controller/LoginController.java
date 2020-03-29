@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tomcat.util.buf.StringUtils;
+
 import com.bit.dao.LoginDAO;
 import com.bit.framework.ModelAndView;
 import com.bit.framework.annotation.Controller;
@@ -17,14 +19,15 @@ public class LoginController {
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		HttpSession session = request.getSession();
-		session.invalidate(); // ¼¼¼Ç Á¤º¸ »èÁ¦
-		String msg = "·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù.";
+		session.invalidate(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		String msg = "ï¿½Î±×¾Æ¿ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.";
 		String url = "/work-spring";
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("msg", msg);
 		mav.addAtrribute("url", url);
-		mav.setView("/WEB-INF/views/login/logout.jsp");
+		//mav.setView("WEB-INF/views/login/logout.jsp");
+		mav.setView("redirect:/work-spring");
 		return mav;
 
 	}
@@ -33,55 +36,58 @@ public class LoginController {
 	@RequestMapping("/loginForm.do")
 	public ModelAndView loginForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		mav.setView("/WEB-INF/views/login/loginForm.jsp");
+		//mav.setView("WEB-INF/views/login/loginForm.jsp");
+		mav.setView("WEB-INF/views/login/loginForm.jsp");
 		return mav;
 	}
 	
 	@RequestMapping("/login.do")
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		// 1. ·Î±×ÀÎ ½Ã ³Ñ¾î¿Â ÆÄ¶ó¹ÌÅÍ Á¤º¸¸¦ ¾ò°Ú´Ù.
+		String from = (String)request.getParameter("from");
+		if(from == null || !from.contains(".do")) from = "/work-spring";
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
+		String recentURI = request.getParameter("from");
 		
-		// 2. LoginVO¿¡ ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		// 2. LoginVOï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		LoginVO login = new LoginVO();
 		login.setId(id);
 		login.setPassword(password);
 		
-		// 3. µ¥ÀÌÅÍº£ÀÌ½ºÀÇ ·Î±×ÀÎ °úÁ¤ ¼öÇà(DAO)
-		//	-> id,password¸¦ Àü´ÞÇÏ¿© ¼º°øÀÌ¶ó¸é, name°ú type±îÁö ¹Þ¾Æ¿À°Ú´Ù.
+		// 3. ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(DAO)
+		//	-> id,passwordï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½, nameï¿½ï¿½ typeï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½Ú´ï¿½.
 		LoginDAO dao = new LoginDAO();
 		LoginVO user = dao.login(login);
 		
-		// 4. ¼º°ø ½Ã ·Î±×ÀÎ Á¤º¸ ¼¼¼Ç µî·Ï
+		// 4. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		String msg = "";
 		String url = "";
 		
+		if(recentURI != null) url = recentURI;
+		
 		if(user != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", user); // ¤Ä¤µ¼Ç µî·Ï
+			session.setAttribute("user", user); // ï¿½Ä¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			
 			switch(user.getType()) {
 			case "S" :
-				msg = user.getName() +" °ü¸®ÀÚ´Ô È¯¿µÇÕ´Ï´Ù.";
+				msg = user.getName() +" ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ È¯ï¿½ï¿½ï¿½Õ´Ï´ï¿½.";
 				break;
 			case "U" :
-				msg = user.getName() +" È¸¿ø´Ô È¯¿µÇÕ´Ï´Ù.";
+				msg = user.getName() +" È¸ï¿½ï¿½ï¿½ï¿½ È¯ï¿½ï¿½ï¿½Õ´Ï´ï¿½.";
 				break;
 			}
-			url = request.getContextPath(); // ÄÁÅÙ¤Ñ
-		}else {// ½ÇÆÐ ½Ã
-			msg = " password°¡ Àß¸øµÇ¾ú½À´Ï´Ù";
+			url = request.getContextPath(); // ï¿½ï¿½ï¿½Ù¤ï¿½
+		}else {// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+			msg = " passwordï¿½ï¿½ ï¿½ß¸ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½";
 			url = "/work-spring/loginForm.do";
 			
 		}
 		
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addAtrribute("msg", msg);
-		mav.addAtrribute("url", url);
-		mav.setView("/WEB-INF/views/login/login.jsp");
+		//mav.setView("WEB-INF/views/login/login.jsp");
+		mav.setView("redirect:" + from );
 		return mav;
 	}
 	

@@ -8,7 +8,6 @@
 	// userList.jsp 에서 전달된 파라미터
 	// -> <a></a> 태그 URL에 vkfkalxjfmf vhgkatlzutj!
 	MemberVO member = (MemberVO)request.getAttribute("member");
-	System.out.println(member);
 	
 	
 	// MemberDAO를 통해 해당 ID에 대한 유저 정보를 가져와 영역에 등록

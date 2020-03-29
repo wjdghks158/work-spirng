@@ -22,7 +22,7 @@ public class DispatcherServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		String urlCtrlName = config.getInitParameter("controllers");
-		// ÄÁÆ®·Ñ·¯ÀÇ ÀÌ¸§(°æ·Î)
+		// ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½(ï¿½ï¿½ï¿½)
 		// -> com.bit.controller.BoardController
 		
 		try {
@@ -46,13 +46,12 @@ public class DispatcherServlet extends HttpServlet {
 		
 		try {
 			if(control == null)
-				throw new Exception("¿äÃ»ÇÏ´Â URI°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+				throw new Exception("ï¿½ï¿½Ã»ï¿½Ï´ï¿½ URIï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
 			
 			Object target = control.getTarget();
 			Method method = control.getMethod();
-			
 			ModelAndView mav 
-					= (ModelAndView)method.invoke(target, request, response ); // ½ÇÇà ½ÃÄÑ¶ó
+					= (ModelAndView)method.invoke(target, request, response ); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ¶ï¿½
 			
 			Map<String, Object> model = mav.getModel();
 			Set<String> keys = model.keySet();
@@ -62,13 +61,14 @@ public class DispatcherServlet extends HttpServlet {
 			}
 			view = mav.getView();
 		}catch (Exception e) {
+			e.printStackTrace();
 			request.setAttribute("exception", e);
 			view = "/ErrorServlet";
 		}
-		// ÆäÀÌÁö ÀÌµ¿
-		// endRedirectÇÒ °æ¿ì¸¦ ¾Ë·ÁÁÖ´Â Ç¥½Ã ¿ëµµ
-		// view Á¤º¸°¡ "redirct:"·Î ½ÃÀÛÇÑ´Ù¸é
-		if(view.startsWith("redirect:")) { // ¸®´ÙÀÌ·ºÆ® ¹æ½Ä
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
+		// endRedirectï¿½ï¿½ ï¿½ï¿½ì¸¦ ï¿½Ë·ï¿½ï¿½Ö´ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ
+		// view ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "redirct:"ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½
+		if(view.startsWith("redirect:")) { // ï¿½ï¿½ï¿½ï¿½ï¿½Ì·ï¿½Æ® ï¿½ï¿½ï¿½
 			view = view.substring("redirect:".length());
 			response.sendRedirect(view);
 		}else {

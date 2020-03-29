@@ -9,6 +9,16 @@ reg_date    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 view_cnt    INT DEFAULT 0,
 PRIMARY KEY (no)
 );
+
+ CREATE TABLE comment (
+writer       VARCHAR(40)    NOT NULL,
+content    VARCHAR(4000),
+reg_date    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+boardno    INT NOT NULL,
+BOARDWRITER VARCHAR(40) NOT NULL
+);
+
+
  commit;
  
 SHOW CREATE TABLE board_file;
@@ -56,4 +66,12 @@ CREATE TABLE `board` (
    PRIMARY KEY (`NO`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
  
+ 
+ 
+ create view board_view
+as select b.no , b.title, b.writer, b.reg_date, b.view_cnt, count(c.boardno) as  cmt_cnt
+from board as  b left join comment  as c on b.no = c.boardno
+group by b.no, b.title, b.writer, b.reg_date, b.view_cnt ;
+
+
  

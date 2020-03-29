@@ -60,10 +60,10 @@ public class MemberController {
 		mav.setView("/WEB-INF/views/member/updateForm.jsp");
 		
 		/*
-		 * DispatcherServlet (FrontController)¿¡¼­ ¿äÃ»À» ¹Þ¾Æ Ã³¸®ÇÏµÇ.
-		 * sendReirect ¹æ½ÄÀ¸·Î ÀÌµ¿½ÃÅ°°Ú´Ù.
-		 * -> "redirect:" ÀÌµ¿ ¹æ½ÄÀ» ±¸ºÐÇÏ±â À§ÇØ Ç¥½Ã ¿ëµµ.
-		 * -> À¯Àú È­¸é¿¡´Â ÀÌµ¿µÈ URLÀ¸·Î Ç¥½Ã!
+		 * DispatcherServlet (FrontController)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Þ¾ï¿½ Ã³ï¿½ï¿½ï¿½Ïµï¿½.
+		 * sendReirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½Ú´ï¿½.
+		 * -> "redirect:" ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ.
+		 * -> ï¿½ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½!
 		 */
 		return mav;
 
@@ -75,28 +75,26 @@ public class MemberController {
 
 		
 		HttpSession session = request.getSession();
-		session.getAttribute("user");
-		
 		LoginVO user = (LoginVO)session.getAttribute("user");
 		
-		// 1. ·Î±×ÀÎ ½Ã ³Ñ¾î¿Â ÆÄ¶ó¹ÌÅÍ Á¤º¸¸¦ ¾ò°Ú´Ù.
+		// 1. ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ú´ï¿½.
 		String id = user.getId();
-		System.out.println("¹ÚÁ¤È¯" + id);
+		System.out.println("ï¿½ï¿½ï¿½ï¿½È¯" + id);
 		MemberDAO dao = new MemberDAO();
 		MemberVO member = dao.selectById(id);
 		
 		System.out.println(member);
 		System.out.println(request.getContextPath());
-		// 4. ¼º°ø ½Ã ·Î±×ÀÎ Á¤º¸ ¼¼¼Ç µî·Ï
+		// 4. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 		String msg = "";
 		String url = "";
 		
 		if(member != null) {
 			 session = request.getSession();
-			session.setAttribute("member", member); // ¤Ä¤µ¼Ç µî·Ï
-			url = request.getContextPath(); // ÄÁÅÙ¤Ñ
-		}else {// ½ÇÆÐ ½Ã
-			msg = "Àß¸øµÈ Á¢±ÞÀÔ´Ï´Ù.";
+			session.setAttribute("member", member); // ï¿½Ä¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+			url = request.getContextPath(); // ï¿½ï¿½ï¿½Ù¤ï¿½
+		}else {// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+			msg = "ï¿½ß¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.";
 			url = "/work-spring";
 			
 		}
@@ -110,10 +108,10 @@ public class MemberController {
 		mav.setView("/WEB-INF/views/member/mypage.jsp");
 		
 		/*
-		 * DispatcherServlet (FrontController)¿¡¼­ ¿äÃ»À» ¹Þ¾Æ Ã³¸®ÇÏµÇ.
-		 * sendReirect ¹æ½ÄÀ¸·Î ÀÌµ¿½ÃÅ°°Ú´Ù.
-		 * -> "redirect:" ÀÌµ¿ ¹æ½ÄÀ» ±¸ºÐÇÏ±â À§ÇØ Ç¥½Ã ¿ëµµ.
-		 * -> À¯Àú È­¸é¿¡´Â ÀÌµ¿µÈ URLÀ¸·Î Ç¥½Ã!
+		 * DispatcherServlet (FrontController)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Þ¾ï¿½ Ã³ï¿½ï¿½ï¿½Ïµï¿½.
+		 * sendReirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½Ú´ï¿½.
+		 * -> "redirect:" ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ.
+		 * -> ï¿½ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½!
 		 */
 		return mav;
 
@@ -126,10 +124,10 @@ public class MemberController {
 		mav.setView("/WEB-INF/views/member/signUpForm.jsp");
 		
 		/*
-		 * DispatcherServlet (FrontController)¿¡¼­ ¿äÃ»À» ¹Þ¾Æ Ã³¸®ÇÏµÇ.
-		 * sendReirect ¹æ½ÄÀ¸·Î ÀÌµ¿½ÃÅ°°Ú´Ù.
-		 * -> "redirect:" ÀÌµ¿ ¹æ½ÄÀ» ±¸ºÐÇÏ±â À§ÇØ Ç¥½Ã ¿ëµµ.
-		 * -> À¯Àú È­¸é¿¡´Â ÀÌµ¿µÈ URLÀ¸·Î Ç¥½Ã!
+		 * DispatcherServlet (FrontController)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Þ¾ï¿½ Ã³ï¿½ï¿½ï¿½Ïµï¿½.
+		 * sendReirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½Ú´ï¿½.
+		 * -> "redirect:" ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ.
+		 * -> ï¿½ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½!
 		 */
 		return mav;
 
@@ -174,7 +172,7 @@ public ModelAndView signUp(HttpServletRequest request, HttpServletResponse respo
 	MemberDAO memberDAO = new MemberDAO();
 	int result = memberDAO.insertMember(vo);
 
-	String msg = "È¸¿ø °¡ÀÔ¿¡ ¼º°øÇÏ¿´½À´Ï´Ù";
+	String msg = "È¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ô¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½";
 	String url = "/work-spring/loginForm.do";
 	
 	ModelAndView mav = new ModelAndView();

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +12,7 @@
 	//	-> 글 등록 버튼 클릭 시, 호출!
 	function moveToWriteForm(){
 		location.href="/work-spring/writeForm.do"
+		
 		// JavaScript 페이지 이동 방식
 	}
 	
@@ -22,7 +24,7 @@
 		</c:when>
 		<c:otherwise>
 			if(confirm('로그인 후 사용 가능합니다.\n로그인 페이지로 이동하시겠습니까?'))
-				location.href='/work-spring/loginForm.do';
+				location.href='/work-spring/loginForm.do?from=list.do';
 		</c:otherwise>
 		</c:choose>
 	}
@@ -65,6 +67,7 @@
 						<a href="javascript:doAction('${board.no}')">
 							<b>${board.title}</b>
 						</a>
+						<span>[${board.cmtCnt}]</span>
 					</td>
 					<td align="center">${board.writer}</td>
 					<td align="center">${board.reg_date}</td>

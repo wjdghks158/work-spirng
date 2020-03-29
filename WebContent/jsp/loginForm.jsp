@@ -14,7 +14,7 @@
 		<hr width="80%"/>
 		<h2>로그인</h2>
 		<hr width="80%"/>
-		<form action="/work-spring/login.do?from=${param.from}" method="post">
+		<form action="/work-spring/login.do" method="post">
 			<table width="40%">
 				<tr>
 					<th>아이디</th>

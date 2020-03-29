@@ -9,29 +9,42 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.bit.dao.BoardDAO;
+import com.bit.dao.CommentDAO;
 import com.bit.framework.ModelAndView;
 import com.bit.framework.annotation.RequestMapping;
 import com.bit.util.MyFileRenamePolicy;
 import com.bit.vo.BoardVO;
+import com.bit.vo.BoardViewVO;
+import com.bit.vo.CommentVO;
 import com.bit.vo.FileVO;
+import com.bit.vo.LoginVO;
 import com.oreilly.servlet.MultipartRequest;
 
 public class BoardController {	
 	
 	@RequestMapping("/updateFormBoard.do")
 	public ModelAndView updateFormBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println("zzzzzzzz");
 		System.out.println(request.getParameter("no"));
 		HttpSession session = request.getSession();
+		LoginVO user = (LoginVO)session.getAttribute("user");
+		String id = user.getId();
+		int no = Integer.parseInt(request.getParameter("no"));
+		
+		BoardDAO dao = new BoardDAO();
+		BoardVO board = dao.selectOne(id,no);
 		ModelAndView mav = new ModelAndView();
-		mav.addAtrribute("member", session.getAttribute("member"));
-		mav.setView("/WEB-INF/views/board/updateFormBoard.jsp");
+	      List<FileVO> fileList = dao.selectFileByNo(no);
+	      
+	      mav.addAtrribute("board", board);
+	      mav.addAtrribute("fileList", fileList);
+	      
+		mav.setView("WEB-INF/views/board/updateForm.jsp");
 		
 		/*
-		 * DispatcherServlet (FrontController)¿¡¼­ ¿äÃ»À» ¹Ş¾Æ Ã³¸®ÇÏµÇ.
-		 * sendReirect ¹æ½ÄÀ¸·Î ÀÌµ¿½ÃÅ°°Ú´Ù.
-		 * -> "redirect:" ÀÌµ¿ ¹æ½ÄÀ» ±¸ºĞÇÏ±â À§ÇØ Ç¥½Ã ¿ëµµ.
-		 * -> À¯Àú È­¸é¿¡´Â ÀÌµ¿µÈ URLÀ¸·Î Ç¥½Ã!
+		 * DispatcherServlet (FrontController)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Ş¾ï¿½ Ã³ï¿½ï¿½ï¿½Ïµï¿½.
+		 * sendReirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½Ú´ï¿½.
+		 * -> "redirect:" ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ.
+		 * -> ï¿½ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½!
 		 */
 		return mav;
 
@@ -41,15 +54,22 @@ public class BoardController {
 	public ModelAndView removeBoard(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println(request.getParameter("no"));
 		HttpSession session = request.getSession();
+		LoginVO user = (LoginVO)session.getAttribute("user");
+		String id = user.getId();
+		int no = Integer.parseInt(request.getParameter("no"));
+		
+		BoardDAO dao = new BoardDAO();
+		int result = dao.deleteBoard(id,no);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("member", session.getAttribute("member"));
-		mav.setView("/WEB-INF/views/board/updateFormBoard.jsp");
+		mav.setView("WEB-INF/views/board/list.jsp");
 		
 		/*
-		 * DispatcherServlet (FrontController)¿¡¼­ ¿äÃ»À» ¹Ş¾Æ Ã³¸®ÇÏµÇ.
-		 * sendReirect ¹æ½ÄÀ¸·Î ÀÌµ¿½ÃÅ°°Ú´Ù.
-		 * -> "redirect:" ÀÌµ¿ ¹æ½ÄÀ» ±¸ºĞÇÏ±â À§ÇØ Ç¥½Ã ¿ëµµ.
-		 * -> À¯Àú È­¸é¿¡´Â ÀÌµ¿µÈ URLÀ¸·Î Ç¥½Ã!
+		 * DispatcherServlet (FrontController)ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã»ï¿½ï¿½ ï¿½Ş¾ï¿½ Ã³ï¿½ï¿½ï¿½Ïµï¿½.
+		 * sendReirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å°ï¿½Ú´ï¿½.
+		 * -> "redirect:" ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ëµµ.
+		 * -> ï¿½ï¿½ï¿½ï¿½ È­ï¿½é¿¡ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ URLï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½!
 		 */
 		return mav;
 
@@ -60,23 +80,22 @@ public class BoardController {
 	
 	@RequestMapping("/detail.do")
 	public ModelAndView detail(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	      System.out.println("@RequestMapping(/detail.do) ¼º°ø!!");
-	      
 	      int boardNo=Integer.parseInt(request.getParameter("no"));
-	      System.out.println(boardNo);
-	      String type=request.getParameter("type"); // Á¶È¸¼ö
+	      String type=request.getParameter("type"); // ï¿½ï¿½È¸ï¿½ï¿½
 	      BoardDAO dao = new BoardDAO();
-	      
-	      if (type != null && type.equals("list")) { // Á¶È¸¼ö Áõ°¡ //?
-	         // /jblog/detail.do?type=list&no="+boardNo ¿©±â¼­ÀÇ type=list
-	         // type=list´Â ¾ÆÁ÷ ¾È½áµµ µÇÁö¸¸ Q&AÇÒ ¶§ ºñ±³ÇÒ‹š »ç¿ëÇÑ´Ù?
+	      CommentDAO cmtDAO = new CommentDAO();
+	      if (type != null && type.equals("list")) { // ï¿½ï¿½È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ //?
 	         dao.updateViewCnt(boardNo);
 	      }//end if
 	      BoardVO board = dao.selectByNo(boardNo);
 	      List<FileVO> fileList = dao.selectFileByNo(boardNo);
-	      
+	      List<CommentVO> cmtList = cmtDAO.selectByNo(boardNo);
+	      for(FileVO item : fileList) {
+	    	  System.out.println(item);
+	      }
 	      ModelAndView mav = new ModelAndView();
-	      mav.setView("/WEB-INF/views/board/detail.jsp");
+	      mav.setView("WEB-INF/views/board/detail.jsp");
+	      mav.addAtrribute("cmtList", cmtList);
 	      mav.addAtrribute("board", board);
 	      mav.addAtrribute("fileList", fileList);
 	      return mav;
@@ -85,14 +104,14 @@ public class BoardController {
 	
 	
 	/*
-	 * ¸ğµç °Ô½Ã±Û Á¶È¸
+	 * ï¿½ï¿½ï¿½ ï¿½Ô½Ã±ï¿½ ï¿½ï¿½È¸
 	 */
-	// handlerRequestÀÇ ¿ªÇÒ
+	// handlerRequestï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping("/list.do")
 	public ModelAndView list(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-	      String field_=request.getParameter("f"); // Á¶È¸¼ö
-	      String query_=request.getParameter("q"); // Á¶È¸¼ö
+	      String field_=request.getParameter("f"); // ï¿½ï¿½È¸ï¿½ï¿½
+	      String query_=request.getParameter("q"); // ï¿½ï¿½È¸ï¿½ï¿½
 	      
 	      String field = "title";
 	      String query = "";
@@ -102,13 +121,14 @@ public class BoardController {
 	      
 		BoardDAO dao = new BoardDAO();
 		
-		List<BoardVO> list = dao.selectList(field, query, 1);
+//		List<BoardVO> list = dao.selectList(field, query, 1);
+		List<BoardViewVO> list = dao.selectListView(field, query, 1);
 		//List<BoardVO> list = dao.selectAllBoard();
 
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("list", list);
-		mav.setView("/WEB-INF/views/board/list.jsp");
+		mav.setView("WEB-INF/views/board/list.jsp");
 		
 		
 		return mav;
@@ -121,7 +141,7 @@ public class BoardController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("list", list);
-		mav.setView("/WEB-INF/views/board/writeForm.jsp");
+		mav.setView("WEB-INF/views/board/writeForm.jsp");
 		
 		
 		return mav;
@@ -131,28 +151,29 @@ public class BoardController {
 	public ModelAndView write(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		/*
-		 * °Ô½ÃÆÇ µî·Ï( Ã·ºÎÆÄÀÏ)
-		 * DataBase¿¡´Â ÆÄÀÏ °æ·Î(ÆÄÀÏ ¸í)À» ÀúÀå
-		 * ´Ù¸¥ ¹°¸®Àû ÀúÀå¼Ò(ÇÏµåµğ½ºÅ©)¿¡ ½ÇÁ¦ ÆÄÀÏÀ» ÀúÀåÇÏ¿©
-		 * Server´Â DB·ÎºÎÅÍ °æ·Î¸¦ ¹Ş¾Æ ½ÇÁ¦ ÀúÀå¼Ò¿¡ Á¢±Ù!
+		 * ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½( Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+		 * DataBaseï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		 * ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ïµï¿½ï¿½Å©)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½
+		 * Serverï¿½ï¿½ DBï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½Ş¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½ ï¿½ï¿½ï¿½ï¿½!
 		 */
-		String saveFolder = "C:\\Users\\bit\\Downloads\\jblog-20200319T061927Z-001\\work-spring\\WebContent\\upload";
-		
+		//String saveFolder = "C:\\Users\\bit\\Downloads\\jblog-20200319T061927Z-001\\work-spring\\WebContent\\upload";
+		String saveFolder = "C:\\Users\\wjdgh\\git\\work-spirng\\WebContent\\upload";
+		System.out.println("ì´ê±° ì‹¤í™”ëƒ1");
 		/*
 		 * MultipartRequest
 		 * [Parameter]
-		 * 	1. ¿äÃ» °´Ã¼
-		 * 	2. ÀúÀå °æ·Î
-		 *  3. ÆÄÀÏÀÇ Å©±â ±Ô¾à
-		 *  4. ÆÄÀÏÀÇ ÀÎÄÚµù
-		 *  5. µ¿¸íÀÇ ÆÄÀÏ¸íÀ» ¹Ù²ãÁÖ´Â rename Á¤Ã¥
+		 * 	1. ï¿½ï¿½Ã» ï¿½ï¿½Ã¼
+		 * 	2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+		 *  3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ ï¿½Ô¾ï¿½
+		 *  4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Úµï¿½
+		 *  5. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½Ö´ï¿½ rename ï¿½ï¿½Ã¥
 		 *  
 		 */
-		
+		System.out.println("ì´ê±° ì‹¤í™”ëƒ4444444444444");
 		MultipartRequest multi = new MultipartRequest(request, saveFolder, 1024 * 1024 * 3, "utf-8", new MyFileRenamePolicy());
-		
+		System.out.println("ì´ê±° ì‹¤í™”ëƒ2");
 		/*
-		 * °Ô½Ã±Û ÀúÀå
+		 * ï¿½Ô½Ã±ï¿½ ï¿½ï¿½ï¿½ï¿½
 		 */
 		String title = multi.getParameter("title");
 		String writer = multi.getParameter("writer");
@@ -170,7 +191,7 @@ public class BoardController {
 		dao.insert(board);
 		
 		/*
-		 * Ã·ºÎÆÄÀÏ ÀúÀå
+		 * Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		 */
 		@SuppressWarnings("rawtypes")
 		Enumeration files = multi.getFileNames();
@@ -193,9 +214,9 @@ public class BoardController {
 				
 			}
 		}
-		
+		System.out.println("ì´ê±° ì‹¤í™”ëƒ3");
 		ModelAndView mav = new ModelAndView();
-		mav.setView("/WEB-INF/views/board/list.jsp");
+		mav.setView("WEB-INF/views/board/list.jsp");
 		
 		
 		return mav;

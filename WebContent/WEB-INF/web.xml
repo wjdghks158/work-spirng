@@ -26,7 +26,8 @@
   		<param-value>
   			com.bit.controller.BoardController |
   			com.bit.controller.LoginController |
-  			com.bit.controller.MemberController
+  			com.bit.controller.MemberController |
+  			com.bit.controller.CommentController
   		</param-value>
   	</init-param>
   </servlet>
