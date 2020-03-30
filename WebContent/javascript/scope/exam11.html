@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+
+</script>
+</head>
+<body>
+<!-- 
+	Custom Data Attributes 
+	data-* 형태로 사용하는 속성
+	- 원하는 속성과 값을 부여할 수 있다
+	
+ -->
+	<div id="wrapper">
+		<button data-cb="1">Insert div</button>
+		<button data-cb="2">Insert img</button>
+		<button data-cb="clear">Clear</button>
+	</div>
+	
+	<div id="append_div"></div>
+	
+	<script>
+		((function() {
+			var appendDiv = document.getElementById('append_div');
+			
+			function append(element) {
+				var target = element.targer || element.srcElement || event.srcElement;
+				var insertFunc = callback[target.getAttribute('data-cb')];
+				appendDiv.appendChild(insertFunc());
+			}
+			
+			var callBack = {
+					'1' : (function() {
+						var div = 
+					})
+			}
+		})());
+		
+		/*
+			클로저의 장점
+				- 퍼포먼스상 유리하게 동작
+				- 최초에 초기화된 고정적인 값이나 자주 이용하는 경우에,
+				    클로즈를 통해 초기화 해두고 콜백 함수에서 지속적으로 참조 가능하다.
+				- 객체의 속성이 자유롭고 변화하기 쉬운 자바 스크립트에서 이러한 디자인 패턴이 효율적이다.
+				- DOM Element를 적극적으로 이용할 때 좋은 효율을 보여준다.
+			[대표적인 사용 예]
+				1. 반복적으로 같은 작업을 수행할 때
+				2. 같은 초기화 작업이 지속적으로 필요할 때
+				3. 콜백 함수에 동적인 데이터를 넘겨주고 싶을 때
+				4. static 변수를 이용하고싶을 때
+				5. 최초 초기화 했던 데이터를 유지하고 싶을 때
+				6. 자바 스크립트 라이브러리나 모듈에서, 내부 함수의 변수를 private 형태로 활용하고 싶을 때
+				
+			[클로저의 단점]
+				- 클로저는 메모리를 소모한다. (스코프 지속)
+				- 이벤트에 대한 콜백, setInterval 같은 메소들에 등록했던
+					콜백 함수들이 메모리에 계속 남아있게 된다.
+					해당 클로저도 메모리에 계속 남게된다.
+					
+			*자바 스크립트 기반의 라이브러리 활용 시 알게 모르게 클로저가 발생될 수 있다.
+			
+		*/
+	</script>
+</body>
+</html>

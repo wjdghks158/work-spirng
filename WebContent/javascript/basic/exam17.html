@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="assets/rectangle.js"></script>
+<script>
+	var rect1 = new Rectangle(1);
+	/*
+		동적 문서 객체 생성
+		createElement(tagName)	: tagName의 요소 생성
+		createTextNode(text)	: 요소에 삽입될 text 생성
+		
+		appendChild(element)	: 자식 요소로 연결(붙여라)
+		
+		[순서]
+		1. 요소 생성
+		2. 요소에 대한 작업 수행 (속성)
+		3. 문서와 연결
+	*/
+	
+	window.onload = function() {
+			var tag = document.createElement('h1');
+			var textTag = document.createTextNode('Heading !!!');
+			
+			var table = document.createElement('table');
+			for(var j=0; j<3; j++) {
+				var tr =  document.createElement('tr');
+				for(var i=0; i<3; i++) {
+					var td =  document.createElement('td');
+					td.style.border = '1px solid black';
+					var td_txt = document.createTextNode("Element");
+					td.appendChild(td_txt);
+					tr.appendChild(td);
+				}
+				table.appendChild(tr);
+			}
+			
+			// 문서 객체 연결
+			tag.appendChild(textTag);
+			document.body.appendChild(tag);
+			document.body.appendChild(table);
+		}
+</script>
+</head>
+<body>
+
+</body>
+</html>

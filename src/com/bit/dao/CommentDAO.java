@@ -26,7 +26,6 @@ public class CommentDAO {
 		      pstmt.setString(index++,cmt.getContent());
 		      pstmt.setInt(index++, cmt.getBoardno());
 		      pstmt.setString(index, cmt.getBoardwriter());
-		      
 		      result = pstmt.executeUpdate();
 		      
 		   }catch(Exception e) {
@@ -77,15 +76,61 @@ public class CommentDAO {
 		      catch(Exception e) {e.printStackTrace();}
 		      ConnectionPool.close(con);
 		   }//end finally
-		   System.out.println("박정환");
-		   System.out.println(list);
 		   return list;
 		   
 	}
 
 	public int delete(String id, int no) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" delete from comment ");
+			sql.append(" WHERE no = ? and writer = ? ");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, no);
+			pstmt.setString(2, id);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
+	}
+
+	public int deleteByBoardNo(int boardno) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" delete from comment ");
+			sql.append(" WHERE boardno = ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, boardno);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
 	}
 
 }

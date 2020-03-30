@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	var num = new Number(12.345333);
+	
+	/*
+		BOM (Browser Object Model), 브라우저 객체 모델
+			: 브라우저 창의 자바 스크립트 인터페이스 객체 역할
+		- window
+		- location
+		- navigator
+		- history
+		- screen
+		- document
+	*/
+	
+	// location.href = 'http://www.inzent.com';
+	location.assign('http://www.itfind.or.kr');
+	
+	//window 없이 사용 가능한 이유 -> with
+	window.alert('hello');
+	window.promt('이름을 입력하세요,.','여기에 입력');
+	var sub = window.open(
+			'',
+			'',
+			'width=400, height=300'
+			);
+	sub.moveTo(0,0);
+	setInterval(function() {
+		sub.moveBy(10,10);
+	},50);
+	
+	/*
+		자바 스크립트는 비동기 방식 수행
+		alert() 수행 후 대기 하지 않고,
+		팝업 창은 팝업의 내용을 계속 수행한다.
+	*/
+</script>
+</head>
+<body>
+
+</body>
+</html>

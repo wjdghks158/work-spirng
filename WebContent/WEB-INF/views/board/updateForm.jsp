@@ -45,9 +45,14 @@
 		</c:when>
 		<c:otherwise>
 			if(confirm('로그인 후 사용 가능합니다.\n로그인 페이지로 이동하시겠습니까?'))
-				location.href='/work-spring/loginForm.do?from=detail.do?type=list&no='+boardNo;
+				location.href='/work-spring/loginForm.do?from=detail.do&type=list&no='+boardNo;
 		</c:otherwise>
 		</c:choose>
+	}
+	function moveToRemoveFile(fileName, no) {
+		console.log(fileName);
+		console.log(no);
+		location.href="/work-spring/removeFile.do?fn="+fileName +"&from=updateFormBoard.do&no="+no;
 	}
 </script>
 
@@ -56,16 +61,22 @@
 	<div id="header">
 		<jsp:include page="/WEB-INF/views/include/header.jsp"/>
 	</div>
-	<form action="/work-spring/updateBoard.do" method="post">
+	<form action="/work-spring/updateBoard.do" method="post" enctype="multipart/form-data">
+		<input type="hidden" size="80" name="no" value = "${param.no}"/>
+		<input type="hidden" size="80" name="writer" value = "${board.writer}"/>
 			<div id="content" align="center">
 			<hr width="80%"/>
 			<h2>게시물 상세 정보</h2>
 			<hr width="80%"/>
 			
 			<table width="80%" border="1">
+				
 				<tr>
 					<th width="25%">번호</th>
-					<td>${param.no}</td>
+					<td>
+
+					${param.no}</td>
+					
 				</tr>
 				<tr>
 					<th width="25%">제목</th>
@@ -84,9 +95,13 @@
 							<a target="blank" href="/work-spring/upload/${file.fileSaveName}" download="${file.fileOriName}">
 								<c:out value="${file.fileOriName}"/>
 							</a> 
-							&nbsp;(${file.fileSize} byte)<br>
-						</c:forEach>
+							&nbsp;(${file.fileSize} byte) <input type="button" onclick="moveToRemoveFile('${file.fileSaveName}','${param.no}')" value="제거하기"/> <br>
+						</c:forEach>   		
+						
+						
+						<input type="file" name="attachFile1" size="40" value="추가하기"/>
 					</td>
+					
 				</tr>
 			</table>
 		</div>

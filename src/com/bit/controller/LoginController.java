@@ -19,8 +19,8 @@ public class LoginController {
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		HttpSession session = request.getSession();
-		session.invalidate(); // ���� ���� ����
-		String msg = "�α׾ƿ� �Ǿ����ϴ�.";
+		session.invalidate();
+		String msg = "�α׾ƿ�";
 		String url = "/work-spring";
 		
 		ModelAndView mav = new ModelAndView();
@@ -48,18 +48,14 @@ public class LoginController {
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
 		String recentURI = request.getParameter("from");
-		
-		// 2. LoginVO�� �Ķ���� ����
+
 		LoginVO login = new LoginVO();
 		login.setId(id);
 		login.setPassword(password);
 		
-		// 3. �����ͺ��̽��� �α��� ���� ����(DAO)
-		//	-> id,password�� �����Ͽ� �����̶��, name�� type���� �޾ƿ��ڴ�.
 		LoginDAO dao = new LoginDAO();
 		LoginVO user = dao.login(login);
 		
-		// 4. ���� �� �α��� ���� ���� ���
 		String msg = "";
 		String url = "";
 		
@@ -67,23 +63,21 @@ public class LoginController {
 		
 		if(user != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", user); // �Ĥ��� ���
+			session.setAttribute("user", user); 
 			
 			switch(user.getType()) {
 			case "S" :
-				msg = user.getName() +" �����ڴ� ȯ���մϴ�.";
+				msg = user.getName() +" ";
 				break;
 			case "U" :
-				msg = user.getName() +" ȸ���� ȯ���մϴ�.";
+				msg = user.getName() +"";
 				break;
 			}
-			url = request.getContextPath(); // ���٤�
-		}else {// ���� ��
-			msg = " password�� �߸��Ǿ����ϴ�";
+			url = request.getContextPath(); 
+		}else {
+			msg = " password Ʋ�Ƚ��ϴ�.";
 			url = "/work-spring/loginForm.do";
-			
 		}
-		
 		
 		ModelAndView mav = new ModelAndView();
 		//mav.setView("WEB-INF/views/login/login.jsp");

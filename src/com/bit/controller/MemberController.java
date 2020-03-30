@@ -58,13 +58,7 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("member", session.getAttribute("member"));
 		mav.setView("/WEB-INF/views/member/updateForm.jsp");
-		
-		/*
-		 * DispatcherServlet (FrontController)���� ��û�� �޾� ó���ϵ�.
-		 * sendReirect ������� �̵���Ű�ڴ�.
-		 * -> "redirect:" �̵� ����� �����ϱ� ���� ǥ�� �뵵.
-		 * -> ���� ȭ�鿡�� �̵��� URL���� ǥ��!
-		 */
+
 		return mav;
 
 	}
@@ -77,24 +71,19 @@ public class MemberController {
 		HttpSession session = request.getSession();
 		LoginVO user = (LoginVO)session.getAttribute("user");
 		
-		// 1. �α��� �� �Ѿ�� �Ķ���� ������ ��ڴ�.
 		String id = user.getId();
-		System.out.println("����ȯ" + id);
 		MemberDAO dao = new MemberDAO();
 		MemberVO member = dao.selectById(id);
-		
-		System.out.println(member);
-		System.out.println(request.getContextPath());
-		// 4. ���� �� �α��� ���� ���� ���
+
 		String msg = "";
 		String url = "";
 		
 		if(member != null) {
 			 session = request.getSession();
-			session.setAttribute("member", member); // �Ĥ��� ���
-			url = request.getContextPath(); // ���٤�
-		}else {// ���� ��
-			msg = "�߸��� �����Դϴ�.";
+			session.setAttribute("member", member); 
+			url = request.getContextPath(); 
+		}else {
+			msg = "";
 			url = "/work-spring";
 			
 		}
@@ -107,12 +96,6 @@ public class MemberController {
 		
 		mav.setView("/WEB-INF/views/member/mypage.jsp");
 		
-		/*
-		 * DispatcherServlet (FrontController)���� ��û�� �޾� ó���ϵ�.
-		 * sendReirect ������� �̵���Ű�ڴ�.
-		 * -> "redirect:" �̵� ����� �����ϱ� ���� ǥ�� �뵵.
-		 * -> ���� ȭ�鿡�� �̵��� URL���� ǥ��!
-		 */
 		return mav;
 
 	}
@@ -123,12 +106,6 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView();
 		mav.setView("/WEB-INF/views/member/signUpForm.jsp");
 		
-		/*
-		 * DispatcherServlet (FrontController)���� ��û�� �޾� ó���ϵ�.
-		 * sendReirect ������� �̵���Ű�ڴ�.
-		 * -> "redirect:" �̵� ����� �����ϱ� ���� ǥ�� �뵵.
-		 * -> ���� ȭ�鿡�� �̵��� URL���� ǥ��!
-		 */
 		return mav;
 
 	}
@@ -172,7 +149,7 @@ public ModelAndView signUp(HttpServletRequest request, HttpServletResponse respo
 	MemberDAO memberDAO = new MemberDAO();
 	int result = memberDAO.insertMember(vo);
 
-	String msg = "ȸ�� ���Կ� �����Ͽ����ϴ�";
+	String msg = "";
 	String url = "/work-spring/loginForm.do";
 	
 	ModelAndView mav = new ModelAndView();

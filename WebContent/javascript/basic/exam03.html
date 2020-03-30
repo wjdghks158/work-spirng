@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	var now = new Date();
+	document.writer('Local Time : ' + now + '<br>');
+	var hour = now.getHours();
+	var minute = now.getMinutes();
+	var month = now.getMonth() + 1;
+	
+	function getDayOfWeek() {
+		var day = this.getDay();
+		var week = ['일','월','수','목','금','토'];
+		return week[day];
+	}
+	
+	Data.prototype.toDay = getDayOfWeek;
+</script>
+</head>
+<body>
+
+</body>
+</html>

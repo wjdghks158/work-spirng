@@ -1,5 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/com/bit/controller/BoardController.java=UTF-8
+encoding//src/com/bit/controller/CommentController.java=UTF-8
+encoding//src/com/bit/controller/MemberController.java=UTF-8
+encoding//src/com/bit/dao/BoardDAO.java=UTF-8
+encoding//src/com/bit/dao/CommentDAO.java=UTF-8
 encoding//src/com/bit/dao/MemberDAO.java=UTF-8
 encoding//src/com/bit/util/ConnectionFactory.java=UTF-8
 encoding//src/com/bit/util/ConnectionPool.java=UTF-8

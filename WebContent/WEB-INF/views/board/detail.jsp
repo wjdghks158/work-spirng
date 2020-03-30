@@ -35,7 +35,7 @@
 	}
 
 	function moveToRemoveComment(no) {
-		location.href = "/work-spring/removeComment.do?no=" + no;
+		location.href = "/work-spring/removeComment.do?no=" + no + "&type=list&from=detail.do";
 		// JavaScript 페이지 이동 방식
 	}
 
@@ -100,9 +100,9 @@
 		<div align="center">
 			<c:if test="${ board.writer eq user.id }">
 				<input type="button" value="수정"
-					onclick="moveToUpdate('${param.no}')" />
+					onclick="moveToUpdate(${param.no})" />
 				<input type="button" value="삭제"
-					onclick="moveToRemove('${param.no}')" />
+					onclick="moveToRemove(${param.no})" />
 			</c:if>
 		</div>
 
@@ -118,8 +118,10 @@
 					<td align="left" style="width: 50%;">${cmt.content}</td>
 					<td align="center" style="width: 20%;"><c:if
 							test="${ cmt.writer eq user.id }">
-							<input type="button" value="삭제"
-								onclick="moveToRemoveComment('${param.no}')" />
+							<form action="/work-spring/removeComment.do?boardno=${board.no}&type=list&from=detail.do" method="post">
+								<input type="hidden" name = "no" value="${cmt.no}">
+								<input type="submit" value="삭제" />
+							</form>
 						</c:if></td>
 				</tr>
 			</c:forEach>
@@ -128,7 +130,7 @@
 		<br>
 		<!------------------ 댓글 등록 -------------------------->
 		<c:if test="${ not empty user }">
-			<form action="/work-spring/addComment.do" method="post">
+			<form action="/work-spring/addComment.do?type=${param.type}&no=${param.no}&from=detail.do" method="post">
 				<table width="80%" border="1">
 					<tr>
 						<td><textarea name="content" rows="4" style="width: 100%;"> </textarea>

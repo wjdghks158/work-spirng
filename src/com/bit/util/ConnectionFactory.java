@@ -9,7 +9,7 @@ public class ConnectionFactory {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url 		= "jdbc:mysql://127.0.0.1:3306/insight?serverTimezone=UTC";
+			String url 		= "jdbc:mysql://127.0.0.1:3306/hellodb?serverTimezone=UTC";
 			String user = "root";
 			String password = "root";
 			

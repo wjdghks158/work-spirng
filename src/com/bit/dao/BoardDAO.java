@@ -16,7 +16,7 @@ import com.bit.vo.FileVO;
 /*
 jblog Database DDL Script
 
-[Table] - �Խñ�, ����
+[Table] - 占쌉시깍옙, 占쏙옙占쏙옙
 CREATE TABLE board (
 no          INT          AUTO_INCREMENT,
 title       VARCHAR(200)    NOT NULL,
@@ -42,9 +42,6 @@ PRIMARY KEY (no)
 public class BoardDAO {
 	private BoardVO board = new BoardVO();
 
-	/*
-	 * ��� �Խñ� ��ȸ
-	 */
 	public List<BoardVO> selectAllBoard() throws Exception {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -65,21 +62,18 @@ public class BoardDAO {
 			while (rs.next()) {
 				BoardVO board = new BoardVO();
 
-				// �����ͺ��̽� ��ȸ ��� ��������
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String writer = rs.getString("writer");
 				String reg_date = rs.getString("reg_date");
 				int view_cnt = rs.getInt("view_cnt");
 
-				// ����Ʈ�� ��� �����ϱ� ���� BoardVO
 				board.setNo(no);
 				board.setTitle(title);
 				board.setWriter(writer);
 				board.setReg_date(reg_date);
 				board.setView_cnt(view_cnt);
 
-				// ����Ʈ�� ����
 				list.add(board);
 			} // end while
 		} catch (Exception e) {
@@ -94,9 +88,7 @@ public class BoardDAO {
 		return list;
 	}// selectAllBoard
 
-	/*
-	 * �Խñ� ��� ��, ����� ��ȣ �������� (Sequence)
-	 */
+
 	public int selectNo() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -129,9 +121,7 @@ public class BoardDAO {
 		return no;
 	}// selectNo
 
-	/*
-	 * �Խñ� ����
-	 */
+
 	public void insert(BoardVO board) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -141,8 +131,7 @@ public class BoardDAO {
 			StringBuilder sql = new StringBuilder();
 			sql.append(" INSERT INTO board(no, title, writer, content) ");
 			sql.append(" VALUES (?, ?, ?, ?) ");
-			System.out.println("����ȯ");
-			System.out.println(board);
+
 			pstmt = con.prepareStatement(sql.toString());
 			int index = 1;
 			pstmt.setInt(index++, board.getNo());
@@ -166,9 +155,6 @@ public class BoardDAO {
 
 	}// insert
 
-	/*
-	 * ÷������ ����
-	 */
 	public void insertFile(FileVO file) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -202,9 +188,7 @@ public class BoardDAO {
 
 	}// insertFile
 
-	/*
-	 * ��ȸ�� ����
-	 */
+
 	public void updateViewCnt(int no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -233,9 +217,6 @@ public class BoardDAO {
 
 	}// updateViewCnt
 
-	/*
-	 * Ư�� �Խñ� ���� ��ȸ (�Խñ� ��ȣ�� �ϳ��� �Խñ� ��ȸ)
-	 */
 	public BoardVO selectByNo(int no) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -252,7 +233,7 @@ public class BoardDAO {
 			pstmt.setInt(1, no);
 
 			ResultSet rs = pstmt.executeQuery();
-			rs.next(); // rs�ȿ� �ִ°� ������.
+			rs.next(); 
 
 			board.setNo(no);
 			board.setTitle(rs.getString("title"));
@@ -276,10 +257,6 @@ public class BoardDAO {
 
 	}// selectByNo
 
-	/*
-	 * ÷������ ���� ��ȸ -> �� ���̺� �� ������ ������ �ϴ� boardNo ����! board -> no
-	 * board_file -> boardNo
-	 */
 	public List<FileVO> selectFileByNo(int boardNo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -329,10 +306,6 @@ public class BoardDAO {
 			
 			con = ConnectionPool.getConnection();
 			StringBuilder sql = new StringBuilder();
-//	      sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
-//	      sql.append(" from board ");
-//	      sql.append(" ORDER BY no DESC ");
-//	      
 
 			sql.append("SELECT * FROM BOARD WHERE " + field + " LIKE ? ORDER BY REG_DATE DESC  limit ?,10");
 
@@ -345,21 +318,18 @@ public class BoardDAO {
 			while (rs.next()) {
 				BoardVO board = new BoardVO();
 
-				// �����ͺ��̽� ��ȸ ��� ��������
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String writer = rs.getString("writer");
 				String reg_date = rs.getString("reg_date");
 				int view_cnt = rs.getInt("view_cnt");
 
-				// ����Ʈ�� ��� �����ϱ� ���� BoardVO
 				board.setNo(no);
 				board.setTitle(title);
 				board.setWriter(writer);
 				board.setReg_date(reg_date);
 				board.setView_cnt(view_cnt);
 
-				// ����Ʈ�� ����
 				list.add(board);
 			} // end while
 		} catch (Exception e) {
@@ -417,7 +387,7 @@ public class BoardDAO {
 			pstmt.setInt(1, no);
 			pstmt.setString(2, id);
 			ResultSet rs = pstmt.executeQuery();
-			rs.next(); // rs�ȿ� �ִ°� ������.
+			rs.next(); // rs占싫울옙 占쌍는곤옙 占쏙옙占쏙옙占쏙옙.
 
 			board.setNo(no);
 			board.setTitle(rs.getString("title"));
@@ -449,10 +419,7 @@ public class BoardDAO {
 
 			con = ConnectionPool.getConnection();
 			StringBuilder sql = new StringBuilder();
-//	      sql.append(" SELECT no, title, writer, reg_date, view_cnt ");
-//	      sql.append(" from board ");
-//	      sql.append(" ORDER BY no DESC ");
-//	      
+
 
 			sql.append("SELECT * FROM BOARD_VIEW WHERE " + field + " LIKE ? ORDER BY REG_DATE DESC  limit ?,10");
 
@@ -465,21 +432,21 @@ public class BoardDAO {
 			while (rs.next()) {
 				BoardViewVO board = new BoardViewVO();
 
-				// �����ͺ��̽� ��ȸ ��� ��������
+
 				int no = rs.getInt("no");
 				String title = rs.getString("title");
 				String writer = rs.getString("writer");
 				String reg_date = rs.getString("reg_date");
 				int view_cnt = rs.getInt("view_cnt");
 				int cmt_cnt = rs.getInt("cmt_cnt");
-				// ����Ʈ�� ��� �����ϱ� ���� BoardVO
+
 				board.setNo(no);
 				board.setTitle(title);
 				board.setWriter(writer);
 				board.setReg_date(reg_date);
 				board.setView_cnt(view_cnt);
 				board.setCmtCnt(cmt_cnt);
-				// ����Ʈ�� ����
+
 				list.add(board);
 			} // end while
 		} catch (Exception e) {
@@ -494,4 +461,87 @@ public class BoardDAO {
 		return list;
 	}
 
+	public int deleteFile(String fn) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" delete from board_file ");
+			sql.append(" WHERE file_save_name = ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, fn);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
+	}
+
+	public int updateBoard(BoardVO board) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" UPDATE board ");
+			sql.append(" SET title = ? , content = ? ");
+			sql.append(" WHERE no = ? ");
+
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setInt(3, board.getNo());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
+	}
+
+
+	public int deleteFileByBoardNo(int boardno) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			con = ConnectionPool.getConnection();
+			StringBuilder sql = new StringBuilder();
+			sql.append(" delete from board_file ");
+			sql.append(" WHERE board_no = ?");
+			pstmt = con.prepareStatement(sql.toString());
+			pstmt.setInt(1, boardno);
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null)
+					pstmt.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ConnectionPool.close(con);
+		} // end finally
+		return result;
+	}
+	
 }// class

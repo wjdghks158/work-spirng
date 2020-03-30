@@ -67,7 +67,7 @@
 				<td>${ member.reg_date }</td>
 			</tr>
 			<tr>
-			  <td> <a href="/work-spring/updateForm.do">수정하기</a> </td>
+			  <td colspan=2 align="center"> <a href="/work-spring/updateForm.do">수정하기</a> </td>
 			</tr>
 		</table>
 	</div>

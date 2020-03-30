@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	window.onload = function() {
+		var list = '';
+		list += '<ul>';
+		list += "<li>ㅗ디ㅣㅐ</li>";
+		list += "</ul>";
+		
+		document.body.innerText = list;
+		
+		document.body.innerHTML += ('<br>' + list);
+		
+		var willEval = '';
+		willEval += 'console.log(number);';
+		willEval += 'var arr = ["hello, "eval() function"];';
+		willEval += 'console.log(arr);';
+		
+		eval(willEval);
+		
+	}
+	var str = 'a12b';
+	console.log(parseInt(str)); // 첫 문자부터 판단하기에, 아니라면 NaN 반환
+</script>
+</head>
+<body>
+
+</body>
+</html>

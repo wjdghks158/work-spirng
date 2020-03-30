@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	// 가입 버튼 수행 시 (submit)
+	// 비밀번호 요소와 비밀번호 확인 요소를 가져,
+	// 두 값이 일치한다며 '성공!' 메시지 출력
+	// 두 값이 일치하지 않으면 '실패!' 메시지 출력'
+	
+	function chk_pwd() {
+		var pwd = document.getElementById('pwd');
+		var pwd_chk = document.getElementById('pwd_chk');
+		console.log("ASDASD");
+		if(pwd == pwd_chk) {
+			alert('성공');
+		}else {
+			alert('실퓨ㅐ');
+		}
+		return false;
+	};
+	
+	function validateForm( form){
+		console.log("ASDASDASD");
+		return false;
+
+		}
+
+</script>
+</head>
+<body>
+	<form name="mForm" onsubmit="return chk_pwd();">
+		아이디 : <input type="text" id="id" name="id"><br>
+		비밀번호 : <input type="password" id="pwd" name="pwd"><br>
+		비밀번호 확인 : <input type="password" id="pwd_chk" name="pwd_chk"><br>
+		<input type="submit" value="가입">
+	</form>
+	
+	<form onsubmit="return validateForm(this);">
+
+<input type="text" id="email" name="email">
+<input type="submit" value="가입">
+</form>
+
+</body>
+</html>

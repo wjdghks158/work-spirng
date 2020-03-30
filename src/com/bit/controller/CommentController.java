@@ -15,6 +15,16 @@ import com.bit.vo.LoginVO;
 public class CommentController {
 	@RequestMapping("/addComment.do")
 	public ModelAndView addComment(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String from = (String)request.getParameter("from");
+		String type = (String)request.getParameter("type");
+		String no = (String)request.getParameter("no");
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("/work-spring/");
+		if(from != null && from.contains(".do")) sb.append(from);
+		if(type != null) sb.append("?type="+type);
+		if(no != null) sb.append("&no="+no);
+		
 		
 		String boardWriter = request.getParameter("boardwriter");
 		String writer = request.getParameter("writer");
@@ -27,13 +37,12 @@ public class CommentController {
 		cmt.setContent(content);
 		cmt.setWriter(writer);
 		
-		
-		
 		CommentDAO dao = new CommentDAO();
 		int result = dao.insert(cmt);
 
 		ModelAndView mav = new ModelAndView();
-		mav.setView("WEB-INF/views/board/list.jsp");
+		//mav.setView("WEB-INF/views/board/list.jsp");
+		mav.setView("redirect:"+sb.toString());
 		
 		
 		return mav;
@@ -41,27 +50,29 @@ public class CommentController {
 	}
 	@RequestMapping("/removeComment.do")
 	public ModelAndView removeComment(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		System.out.println(request.getParameter("no"));
+		
+		String from = (String)request.getParameter("from");
+		String type = (String)request.getParameter("type");
+		String no = (String)request.getParameter("no");
+		String boardno = (String)request.getParameter("boardno");
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("/work-spring/");
+		if(from != null && from.contains(".do")) sb.append(from);
+		if(type != null) sb.append("?type="+type);
+		if(boardno != null) sb.append("&no="+boardno);
+		
+		
 		HttpSession session = request.getSession();
 		LoginVO user = (LoginVO)session.getAttribute("user");
 		String id = user.getId();
-		int no = Integer.parseInt(request.getParameter("no"));
 		
 		CommentDAO dao = new CommentDAO();
-		int result = dao.delete(id,no);
-		
+		int result = dao.delete(id,Integer.parseInt(no));
 		ModelAndView mav = new ModelAndView();
 		mav.addAtrribute("member", session.getAttribute("member"));
-		mav.setView("WEB-INF/views/board/list.jsp");
-		
-		/*
-		 * DispatcherServlet (FrontController)���� ��û�� �޾� ó���ϵ�.
-		 * sendReirect ������� �̵���Ű�ڴ�.
-		 * -> "redirect:" �̵� ����� �����ϱ� ���� ǥ�� �뵵.
-		 * -> ���� ȭ�鿡�� �̵��� URL���� ǥ��!
-		 */
+		mav.setView("redirect:"+sb.toString());
 		return mav;
-
 	}
 	
 }

@@ -22,9 +22,7 @@ public class DispatcherServlet extends HttpServlet {
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		String urlCtrlName = config.getInitParameter("controllers");
-		// ��Ʈ�ѷ��� �̸�(���)
-		// -> com.bit.controller.BoardController
-		
+
 		try {
 			mappings = new HandlerMapping(urlCtrlName);
 		}catch (Exception e) {
@@ -46,12 +44,12 @@ public class DispatcherServlet extends HttpServlet {
 		
 		try {
 			if(control == null)
-				throw new Exception("��û�ϴ� URI�� �������� �ʽ��ϴ�.");
+				throw new Exception("����.");
 			
 			Object target = control.getTarget();
 			Method method = control.getMethod();
 			ModelAndView mav 
-					= (ModelAndView)method.invoke(target, request, response ); // ���� ���Ѷ�
+					= (ModelAndView)method.invoke(target, request, response ); 
 			
 			Map<String, Object> model = mav.getModel();
 			Set<String> keys = model.keySet();
@@ -65,10 +63,8 @@ public class DispatcherServlet extends HttpServlet {
 			request.setAttribute("exception", e);
 			view = "/ErrorServlet";
 		}
-		// ������ �̵�
-		// endRedirect�� ��츦 �˷��ִ� ǥ�� �뵵
-		// view ������ "redirct:"�� �����Ѵٸ�
-		if(view.startsWith("redirect:")) { // �����̷�Ʈ ���
+
+		if(view.startsWith("redirect:")) { 
 			view = view.substring("redirect:".length());
 			response.sendRedirect(view);
 		}else {
