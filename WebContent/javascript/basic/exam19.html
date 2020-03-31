@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script>
+	function calculate() {
+		var f = document.calForm;
+		form.out.value = eval(form.in.value);
+		/*
+			eval() : 자바 스크립트 소스 코드를 동적으로 실행
+			-> 3+4 입력 시 코드 실행으로 결과는 7이 된다.
+			
+			입력을 다른 스크립트 코드로 사용시
+		*/
+		eval('var value = 10');
+		console.log(value);
+	}
+	
+	//전체 선택
+	function selectAll() {
+		//document.inputForm.hobby -> 여러 개 배열로 반환(리스트)
+		var length = document.inputForm.hobby.length;
+		for( var i = 0; i< length; i++) {
+			document.inputForm.hobby[i].checked = true;
+		}
+	}
+
+</script>
+</head>
+<body>
+<form name="calForm">
+	수식 입력 <input type="text" name="in"	size="20"><br>
+	계산 결과 <input type="text" name="out" size="20"><br>
+	<input type="button" value="계산" onclick="calculate()">
+</form>
+</body>
+</html>

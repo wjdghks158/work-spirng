@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.12.4.js"/>
+
+<script>
+	/*
+		jQuery (제이쿼리)
+		- 클라이언트 자바스크립트 라이브러리
+		- 문서 객체 모델과 관련된 처리를 보다 쉽게할 수 있다.(이벤트 처리)
+		- 플래시 & 실버라이트와 비슷한 효과를 웹 표준만으로 적용 가능
+		- ajax를 활용한 어플리케이션 개발 지원
+		
+		제이쿼리 라이브러리를 사용하기 위한 2가지 방법
+		1. http://www.jquery.com 에서 라이브러리를 다운받아 적용(.js)
+		<script src="[라이브러리 경로]">
+		2.CDN (Content Delivery Network) 호스트 연결을 통한 사용
+		 - 유저가 직접 라이브러리를 포함할 필요가 없음
+			<script src="http://code.jquery.com/jquery-1.12.4.js">
+		
+	*/
+	
+	jQuery(document).ready(function() {
+		console.log('Hello');
+	});
+	
+	$(document).ready(function() {
+		console.log('jQuery~');
+	});
+	
+	$(function() { // 주로 많이 사용!
+		setTimeout(function() {
+			console.log($())
+		}, 1000);
+		console.log("자바스크립트");
+	
+	});
+	
+</script>
+</head>
+<body>
+
+</body>
+</html>

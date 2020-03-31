@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+
+/*
+ * 두 목록 중 첫 번째 리스트 색상은 레드로 변경
+ 	두 목록 중 두 번째 리스트 색상은 블루로 변경
+ 
+ */
+	$(function() {
+		$('ul:nth-child(2)').css('color','red');
+		$('ul:nth-child(1)').css('color','blue');
+	})
+	
+</script>
+</head>
+<body>
+	
+		<ul>
+		<li>첫 번째 리스트 입니다.</li>
+		<li id="second">두 번째 입니다.</li>
+		<li>세 번째 리스트 입니다.</li>
+		<li>네 번째 리스트 입니다.</li>
+	</ul>
+	
+	<ul>
+		<li>첫 번째 리스트 입니다.</li>
+		<li id="second">두 번째 입니다.</li>
+		<li>세 번째 리스트 입니다.</li>
+		<li>네 번째 리스트 입니다.</li>
+	</ul>
+	
+	
+	
+</body>
+</html>

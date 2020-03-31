@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+
+/*
+ * 자식 선택자 ('>') 만을 활용하여
+ 1. strong 요소의 색상을 레드로 변경
+ 2. span 요소의 색상을 블루로 변경
+ 
+ */
+	$(function() {
+		$('.red').css('color','red');
+		
+		$('#first, #third').css('color', 'red');
+		$('ul #second, li#fourth').css({
+			'color': '#0000FF',
+			'fontSize': '2em'
+		}); // 여러 옵션을 동시에 주기위해 Object(JSON) 전달!
+		
+		$('div > strong').css('color', 'red'); // '' 문자열 시작은 라인 별로 인식!
+		// 다중 라인으로 작성 시 문자열의 + 연산을 활용하라!
+		$('div > span').css('color', 'blue');
+	})
+	
+</script>
+</head>
+<body>
+	<div class="red">asdasdsad</div>
+	<li class="red">asd<strong>asdasd</strong></li>
+	<li><span>list3</span></li>
+	<li id="first">첫 번째 리스트 입니다.</li>
+	<li id="second">두 번째 리스트 입니다.</li>
+	
+	<ul>
+		<li><strong>strong</strong> text text text </li>
+		<li> text text text text</li>
+		<li>
+			<div>
+				<strong> strong</strong>
+				text text
+				<span>span</span>
+			</div>
+		</li>
+	</ul>
+	
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+
+/*
+ * 1. 첫 번째 요소의 색상을 레드로 변경
+ 	2. 두 번째 요소의 색상을 블루로 변경
+ */
+	$(function() {
+		$('li[id]').css('color', 'red');
+		$('li[class]').css('color', 'blue');
+		$('li[title]').css('fontWeight', 'bold');
+	})
+	
+</script>
+</head>
+<body>
+	
+	<ul style="width: 200px; heigth: 100px; overflow-y: scroll">
+		<li title="안녕하세요" id="first">첫 번째 리스트 입니다.</li>
+		<li class="second">두 번째 입니다.</li>
+		<li id="third">세 번째 리스트 입니다.</li>
+		<li>네 번째 리스트 입니다.</li>
+	</ul>
+	
+	<ul>
+		<li>첫 번째 리스트 입니다.</li>
+		<li id="second">두 번째 입니다.</li>
+		<li>세 번째 리스트 입니다.</li>
+		<li>네 번째 리스트 입니다.</li>
+	</ul>
+	
+	
+	
+</body>
+</html>

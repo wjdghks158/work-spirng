@@ -20,20 +20,6 @@ BOARDWRITER VARCHAR(40) NOT NULL,
 PRIMARY KEY (no)
 );
 
-
- commit;
- 
-SHOW CREATE TABLE board_file;
-
-CREATE TABLE `board` (
-   `NO` int NOT NULL AUTO_INCREMENT,
-   `board_no` int DEFAULT NULL,
-   `file_ori_name` varchar(200) DEFAULT NULL,
-   `file_save_name` varchar(200) DEFAULT NULL,
-   `file_size` varchar(512) DEFAULT NULL,
-   PRIMARY KEY (`NO`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
- 
  
  CREATE TABLE `member` (
    `ID` varchar(20) DEFAULT NULL,
@@ -51,14 +37,7 @@ CREATE TABLE `board` (
    `reg_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
  
- CREATE TABLE `t_board` (
-   `NO` int NOT NULL AUTO_INCREMENT,
-   `TITLE` varchar(20) DEFAULT NULL,
-   `WRITER` varchar(10) DEFAULT NULL,
-   `REG_DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   PRIMARY KEY (`NO`)
- ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
- 
+
  CREATE TABLE `board_file` (
    `NO` int NOT NULL AUTO_INCREMENT,
    `board_no` int DEFAULT NULL,
@@ -66,8 +45,7 @@ CREATE TABLE `board` (
    `file_save_name` varchar(200) DEFAULT NULL,
    `file_size` varchar(512) DEFAULT NULL,
    PRIMARY KEY (`NO`)
- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
- 
+ ) 
  
  
  create view board_view
